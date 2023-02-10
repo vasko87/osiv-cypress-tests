@@ -4,10 +4,8 @@ pipeline {
     
      parameters{
         string(name: 'SPEC', defaultValue: "cypress/e2e/**/**", description: "Enter the script path you want to execute")
-        choice(name: 'BROWSER', choices: ['chrome', 'edge'], description: "Choice the browser where you want ot execute your scrips")
-        choice(name: 'BASEURL', choices:["https://osiv-frtest.ivnet.ch", "https://osiv-nrtest.ivnet.ch"], description: "Choice the URL where you want to execute you scripts")
-        base64File 'THEFILE'
-
+        choice(name: 'BROWSER', choices: ['chrome'], description: "Choice the browser where you want ot execute your scrips")
+        choice(name: 'BASEURL', choices:["https://osiv-frtest.ivnet.ch", "https://osiv-nrtest.ivnet.ch", "https://fw-test2.ivnet.ch"], description: "Choice the URL where you want to execute you scripts")
      }
 
 
@@ -15,14 +13,14 @@ pipeline {
         stage('Building'){
             steps{
                echo "Building the application"
+               bat "npm install cypress"
+               bat "npm audit fix"
             }
            
                 }
         stage('Testing'){
             steps{
-                bat "npm install cypress --save-dev"
-                bat "npm run cypress:runDefault"
-                
+                bat "npx cypress run --env ENV=${ENVIROMENT} --browser ${BROWSER} --spec ${SPEC} --record --key 419a7ab6-1abe-46ec-949c-2d09259a76f2"    
             }
         }
         stage('Deploying'){
