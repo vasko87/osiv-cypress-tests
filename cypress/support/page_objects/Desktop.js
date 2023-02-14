@@ -15,6 +15,6 @@ export default {
 
   Entscheid() {
     cy.contains("Entscheid").click();
-    return cy.cy("[class*='link_level-2'][menuname='Entscheid']");
+    return cy.get("[class*='link_level-2'][menuname='Entscheid']");
   }
 };
